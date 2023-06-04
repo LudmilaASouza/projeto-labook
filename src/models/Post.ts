@@ -21,6 +21,10 @@ export interface PostModel { //Frontend
     }
 }
 
+export interface PostDBWithCreatorName extends PostDB {
+   creator_name: string 
+}
+
 export class Post {
     constructor(
         private id: string,

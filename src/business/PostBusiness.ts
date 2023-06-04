@@ -1,4 +1,5 @@
-import { CreatePostsInputDTO, createPostsOutputDTO } from './../dtos/post/createPosts.dto';
+import { GetPostsInputDTO, GetPostsOutputDTO } from './../dtos/post/getPosts.dto';
+import { CreatePostsInputDTO, CreatePostsOutputDTO } from './../dtos/post/createPosts.dto';
 import { PostDatabase } from "../database/PostDatabase";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
@@ -12,7 +13,7 @@ export class PostBusiness {
         private tokenManager: TokenManager
     ) {}
 
-    public createPost = async (input: CreatePostsInputDTO): Promise<createPostsOutputDTO> => {
+    public createPost = async (input: CreatePostsInputDTO): Promise<CreatePostsOutputDTO> => {
         
         const {content, token} = input
 
@@ -36,8 +37,41 @@ export class PostBusiness {
         const postDB = post.toDBModel()
         await this.postDatabase.insertPost(postDB)
 
-        const output: createPostsOutputDTO = undefined
+        const output: CreatePostsOutputDTO = undefined
 
         return output
+    }
+
+    public getPosts = async (input: GetPostsInputDTO): Promise<GetPostsOutputDTO> => {
+
+        const { token } = input
+
+        const payload = this.tokenManager.getPayload(token)
+        if (!payload) {
+            throw new UnauthorizedError()
+        }
+
+        const postsDBWithCreatorName = 
+            await this.postDatabase.getPostsWithCreatorName()
+
+        const posts = postsDBWithCreatorName.map((postWithCreatorName)=> {
+            const post = new Post (
+                postWithCreatorName.id,
+                postWithCreatorName.content,
+                postWithCreatorName.likes,
+                postWithCreatorName.dislikes,
+                postWithCreatorName.created_at,
+                postWithCreatorName.update_at,
+                postWithCreatorName.creator_id,
+                postWithCreatorName.creator_name
+            )
+
+            return post.toBusinessModel()
+        })
+
+        const output: GetPostsOutputDTO = posts
+
+        return output
+                
     }
 }

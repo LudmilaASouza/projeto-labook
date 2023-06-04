@@ -5,7 +5,7 @@ export interface CreatePostsInputDTO {
     token: string
 }
 
-export type createPostsOutputDTO = undefined
+export type CreatePostsOutputDTO = undefined
 
 export const createPostsSchema = z.object({
     content: z.string().min(1),
