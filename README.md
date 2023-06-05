@@ -1,8 +1,8 @@
-# Projeto Labook :thumbsup: :thumbsdown:
+# Projeto :thumbsup: Labook :thumbsdown:
 
 O Labook é uma rede social com o objetivo de promover a conexão e interação entre pessoas. Quem se cadastrar no aplicativo poderá criar e curtir publicações. 
 
-# Conteúdos e ferramentas
+# Conteúdos e ferramentas :gear:
 - NodeJS
 - Typescript
 - Express
@@ -16,7 +16,7 @@ O Labook é uma rede social com o objetivo de promover a conexão e interação 
 - Roteamento
 - Postman
 
-# Requisitos
+# Requisitos :heavy_check_mark:
 
 - Endpoints
     - signup
@@ -37,12 +37,12 @@ O Labook é uma rede social com o objetivo de promover a conexão e interação 
     - Arquitetura em camadas
     - Roteadores no Express
 
-# Banco de dados
+# Banco de dados :minidisc:
 
 ![projeto-labook (2)](https://user-images.githubusercontent.com/29845719/216036534-2b3dfb48-7782-411a-bffd-36245b78594e.png)
 
 https://dbdiagram.io/d/63d16443296d97641d7c1ae1
 
-# Documentação no Postman
+# Documentação no Postman :orange_book:
 
 https://documenter.getpostman.com/view/22178263/2s93sXcuX5
