@@ -8,6 +8,8 @@ import { Post } from '../models/Post';
 import { EditPostInputDTO, EditPostOutputDTO } from '../dtos/post/editPost.dto';
 import { NotFoundError } from '../errors/NotFoundError';
 import { ForbiddenError } from '../errors/ForbiddenError';
+import { DeletePostInputDTO, DeletePostOutputDTO } from '../dtos/post/deletePost.dto';
+import { USER_ROLES } from '../models/User';
 
 export class PostBusiness {
     constructor (
@@ -106,12 +108,40 @@ export class PostBusiness {
             payload.name
         )
 
-        post.setCreatorName(content)
+        post.setContent(content)
 
         const updatePostDB = post.toDBModel()
         await this.postDatabase.updatePost(updatePostDB)
 
         const output: EditPostOutputDTO = undefined
+
+        return output
+
+
+    }
+
+    public deletePost = async (input: DeletePostInputDTO): Promise<DeletePostOutputDTO> => {
+        const {token, idToDel} = input
+
+        const payload = this.tokenManager.getPayload(token)
+        if(!payload) {
+            throw new UnauthorizedError()
+        }
+
+        const postDB = await this.postDatabase.findPostById(idToDel) 
+        if (!postDB) {
+            throw new NotFoundError("Esse ID de post não existe.")
+        }
+
+        if(payload.role !== USER_ROLES.ADMIN){
+            if(payload.id !== postDB.creator_id){
+                throw new ForbiddenError ("Somente quem criou o Post pode editá-lo.")
+            }
+        }
+
+        await this.postDatabase.deletePostById(idToDel)
+
+        const output: DeletePostOutputDTO = undefined
 
         return output
 
