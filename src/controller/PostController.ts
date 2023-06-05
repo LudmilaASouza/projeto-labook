@@ -4,6 +4,7 @@ import { ZodError } from "zod";
 import { BaseError } from "../errors/BaseError";
 import { createPostsSchema } from "../dtos/post/createPosts.dto";
 import { GetPostsSchema } from '../dtos/post/getPosts.dto';
+import { EditPostSchema } from "../dtos/post/editPost.dto";
 
 export class PostController {
     constructor(
@@ -54,6 +55,31 @@ export class PostController {
             } else {
                 res.status(500).send("Erro inesperado.")
             }
+        }
+    }
+
+    public editPost = async (req: Request, res: Response) => {
+        try {
+            const input = EditPostSchema.parse({
+                token: req.headers.authorization,
+                content: req.body.content,
+                idToEdit: req.params.id
+            })
+
+            const output = await this.postBusiness.editPost(input)
+
+            res.status(200).send(output)
+            
+        } catch (error) {
+            console.log(error)
+
+            if(error instanceof ZodError){
+                res.status(400).send(error.issues)
+            } else if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado.")
+            } 
         }
     }
 }
