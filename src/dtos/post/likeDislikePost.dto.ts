@@ -9,7 +9,7 @@ export interface LikeDislikePostInputDTO {
 export type LikeDislikeOutputDTO = undefined
 
 export const LikeDislikePostSchema = z.object ({
-    postId : z.string().min(1),
-    token: z.string().min(1),
-    like: z.boolean()
+    postId : z.string({invalid_type_error: "ID precisa ser string."}).min(1),
+    token: z.string({invalid_type_error: "Token precisa ser string."}).min(1),
+    like: z.boolean({invalid_type_error: "Like precisa ser true ou false."})
 }).transform ( data => data as LikeDislikePostInputDTO)

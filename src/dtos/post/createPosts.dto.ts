@@ -8,6 +8,6 @@ export interface CreatePostsInputDTO {
 export type CreatePostsOutputDTO = undefined
 
 export const createPostsSchema = z.object({
-    content: z.string().min(1),
-    token: z.string().min(1)
+    content: z.string({invalid_type_error: "Content precisa ser string."}).min(1),
+    token: z.string({invalid_type_error: "Token precisa ser string."}).min(1)
 }).transform(data => data as CreatePostsInputDTO)
