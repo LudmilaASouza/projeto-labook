@@ -67,8 +67,6 @@ export class PostController {
                 token: req.headers.authorization,
                 idToEdit: req.params.id
             })
-            console.log(input)
-
             const output = await this.postBusiness.editPost(input)
             
             res.status(200).send(output)
